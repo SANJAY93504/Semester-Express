@@ -1,0 +1,238 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ subject.name }} - Semester Express</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+</head>
+
+<body>
+
+   <!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+
+    <!-- Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="dashboard-sidebar" id="dashboardSidebar">
+
+        <div class="sidebar-header">
+            <div class="sidebar-logo">SE</div>
+            <span>Semester Express</span>
+        </div>
+
+        <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+
+            <a href="{% url 'courses:collections' %}">
+                Courses
+            </a>
+
+            <span>›</span>
+
+            <span>{{ subject.course.name }}</span>
+
+            <span>›</span>
+
+            <span>{{ subject.name }}</span>
+
+        </div>
+
+
+        <!-- Subject Header -->
+        <section class="course-page-header">
+
+            <h1>{{ subject.name }}</h1>
+
+            {% if subject.description %}
+                <p>{{ subject.description }}</p>
+            {% else %}
+                <p>
+                    Explore the units available in this subject.
+                </p>
+            {% endif %}
+
+        </section>
+
+
+        <!-- Units -->
+        <section class="subjects-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Units</h2>
+
+                    <p>
+                        Units included in {{ subject.name }}
+                    </p>
+                </div>
+
+            </div>
+
+
+            {% if units %}
+
+                <div class="subject-grid">
+
+                    {% for unit in units %}
+
+                        <a
+                            href="{% url 'courses:unit_detail' unit.id %}"
+                            class="subject-card"
+                        >
+
+                            <div class="subject-number">
+                                {{ forloop.counter }}
+                            </div>
+
+                            <div class="subject-content">
+
+                                <h3>
+                                    {{ unit.name }}
+                                </h3>
+
+                                {% if unit.description %}
+                                    <p>
+                                        {{ unit.description }}
+                                    </p>
+                                {% endif %}
+
+                            </div>
+
+                            <span class="subject-arrow">
+                                →
+                            </span>
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-state-icon">
+                        📖
+                    </div>
+
+                    <h2>No Units Available</h2>
+
+                    <p>
+                        Units for this subject will be available soon.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <!-- WhatsApp -->
+    <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN" class="whatsapp-button">
+        💬
+    </a>
+
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>

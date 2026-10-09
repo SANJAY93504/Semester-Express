@@ -1,0 +1,910 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Semester Express</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+<!-- ==================================================
+     SIDE MENU
+================================================== -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+
+<aside
+    class="side-menu"
+    id="sideMenu"
+>
+
+    <div class="side-menu-header">
+
+        <h3>
+            Semester Express
+        </h3>
+
+    </div>
+
+
+    <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+
+<!-- ==================================================
+     HOME CONTENT
+================================================== -->
+
+<main class="home-page">
+
+
+    <!-- HERO -->
+
+    <section class="home-hero">
+
+        <div class="home-hero-content">
+
+            <p class="small-title">
+                SEMESTER EXPRESS
+            </p>
+
+
+            <h1>
+                Learn Better.
+                <br>
+                Learn Smarter.
+            </h1>
+
+
+            <p>
+                Complete courses, lectures and study
+                material for your semester.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="{% url 'courses:collections' %}"
+                    class="course-button"
+                >
+                    Browse Courses
+                </a>
+
+
+                <a
+                    href="{% url 'courses:free_courses' %}"
+                    class="secondary-button"
+                >
+                    Free Courses
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         BROWSE
+    ================================================== -->
+
+    <section class="home-section">
+
+        <div class="home-section-heading">
+
+            <div>
+
+                <p class="small-title">
+                    EXPLORE
+                </p>
+
+                <h2>
+                    Browse Courses
+                </h2>
+
+            </div>
+
+
+            <a
+                href="{% url 'courses:collections' %}"
+                class="section-link"
+            >
+                View All →
+            </a>
+
+        </div>
+
+
+        {% if collections %}
+
+            <div class="home-collection-grid">
+
+                {% for collection in collections %}
+
+                    <a
+                        href="{% url 'courses:collection_detail' collection.id %}"
+                        class="home-collection-card"
+                    >
+
+                        <div class="home-collection-image">
+
+                            {% if collection.image %}
+
+                                <img
+                                    src="{{ collection.image.url }}"
+                                    alt="{{ collection.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="home-placeholder">
+                                    📚
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="home-collection-content">
+
+                            <h3>
+                                {{ collection.name }}
+                            </h3>
+
+
+                            {% if collection.description %}
+
+                                <p>
+                                    {{ collection.description }}
+                                </p>
+
+                            {% else %}
+
+                                <p>
+                                    Explore courses in this collection.
+                                </p>
+
+                            {% endif %}
+
+
+                            <span>
+                                View Courses →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="home-empty">
+
+                <div>
+                    📚
+                </div>
+
+                <h3>
+                    No Collections Available
+                </h3>
+
+                <p>
+                    Courses will appear here soon.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ==================================================
+         FEATURED COURSES
+    ================================================== -->
+
+    <section class="home-section">
+
+        <div class="home-section-heading">
+
+            <div>
+
+                <p class="small-title">
+                    FEATURED
+                </p>
+
+                <h2>
+                    Featured Courses
+                </h2>
+
+            </div>
+
+            <a
+        href="{% url 'courses:collections' %}"
+        class="section-link"
+    >
+        View All →
+    </a>
+
+        </div>
+
+
+        {% if featured_courses %}
+
+            <div class="home-course-grid">
+
+                {% for course in featured_courses %}
+
+                    <a
+                        href="{% url 'courses:course_detail' course.id %}"
+                        class="home-course-card"
+                    >
+
+                        <div class="home-course-image">
+
+                            {% if course.image %}
+
+                                <img
+                                    src="{{ course.image.url }}"
+                                    alt="{{ course.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="home-placeholder">
+                                    🎓
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="home-course-content">
+
+                            <span class="course-badge">
+                                {% if course.is_paid %}
+                                    Paid Course
+                                {% else %}
+                                    Free Course
+                                {% endif %}
+                            </span>
+
+
+                            <h3>
+                                {{ course.name }}
+                            </h3>
+
+
+                            <p>
+                                {{ course.branch }}
+                                {% if course.semester %}
+                                    • {{ course.semester }}
+                                {% endif %}
+                            </p>
+
+
+                            {% if course.is_paid %}
+
+                                <div class="course-price">
+
+                                    <strong>
+                                        ₹{{ course.price }}
+                                    </strong>
+
+                                    {% if course.original_price %}
+                                        <del>
+                                            ₹{{ course.original_price }}
+                                        </del>
+                                    {% endif %}
+
+                                </div>
+
+                            {% else %}
+
+                                <strong class="free-label">
+                                    FREE
+                                </strong>
+
+                            {% endif %}
+
+
+                            <span class="course-card-link">
+                                View Course →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="home-empty">
+
+                <div>
+                    🎓
+                </div>
+
+                <h3>
+                    No Featured Courses
+                </h3>
+
+                <p>
+                    Featured courses will appear here soon.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ==================================================
+         FREE COURSES
+    ================================================== -->
+
+    <section
+        class="home-section"
+        id="free-courses"
+    >
+
+        <div class="home-section-heading">
+
+            <div>
+
+                <p class="small-title">
+                    START LEARNING
+                </p>
+
+                <h2>
+                    Free Courses
+                </h2>
+
+            </div>
+
+            <a
+        href="{% url 'courses:free_courses' %}"
+        class="section-link"
+    >
+        View All →
+    </a>
+
+        </div>
+
+
+        {% if free_courses %}
+
+            <div class="home-course-grid">
+
+                {% for course in free_courses %}
+
+                    <a
+                        href="{% url 'courses:course_detail' course.id %}"
+                        class="home-course-card"
+                    >
+
+                        <div class="home-course-image">
+
+                            {% if course.image %}
+
+                                <img
+                                    src="{{ course.image.url }}"
+                                    alt="{{ course.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="home-placeholder">
+                                    🎓
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="home-course-content">
+
+                            <span class="course-badge free-badge">
+                                FREE
+                            </span>
+
+
+                            <h3>
+                                {{ course.name }}
+                            </h3>
+
+
+                            <p>
+                                {{ course.branch }}
+                                {% if course.semester %}
+                                    • {{ course.semester }}
+                                {% endif %}
+                            </p>
+
+
+                            <span class="course-card-link">
+                                Start Learning →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="home-empty">
+
+                <div>
+                    📖
+                </div>
+
+                <h3>
+                    No Free Courses Yet
+                </h3>
+
+                <p>
+                    Free courses will be added soon.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ==================================================
+         WHY SEMESTER EXPRESS
+    ================================================== -->
+
+    <section class="home-section">
+
+        <div class="home-section-heading">
+
+            <div>
+
+                <p class="small-title">
+                    WHY US
+                </p>
+
+                <h2>
+                    Everything You Need to Learn
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="home-feature-grid">
+
+
+            <div class="home-feature-card">
+
+                <div class="feature-icon">
+                    🎥
+                </div>
+
+                <h3>
+                    Video Lectures
+                </h3>
+
+                <p>
+                    Learn every topic through structured
+                    lectures.
+                </p>
+
+            </div>
+
+
+            <div class="home-feature-card">
+
+                <div class="feature-icon">
+                    📚
+                </div>
+
+                <h3>
+                    Complete Courses
+                </h3>
+
+                <p>
+                    Subjects, units and lectures organized
+                    in one place.
+                </p>
+
+            </div>
+
+
+            <div class="home-feature-card">
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+                <h3>
+                    Study Material
+                </h3>
+
+                <p>
+                    Access useful notes and course
+                    resources.
+                </p>
+
+            </div>
+
+
+            <div class="home-feature-card">
+
+                <div class="feature-icon">
+                    📱
+                </div>
+
+                <h3>
+                    Learn Anywhere
+                </h3>
+
+                <p>
+                    Study comfortably on mobile, tablet
+                    or computer.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         TESTIMONIALS
+    ================================================== -->
+
+    <section class="home-section">
+
+        <div class="home-section-heading">
+
+            <div>
+
+                <p class="small-title">
+                    STUDENTS
+                </p>
+
+                <h2>
+                    What Students Say
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="testimonial-grid">
+
+
+            <div class="testimonial-card">
+
+                <div class="testimonial-stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "Semester Express makes it easy to
+                    find all my semester courses in one
+                    place."
+                </p>
+
+                <strong>
+                    Student
+                </strong>
+
+            </div>
+
+
+            <div class="testimonial-card">
+
+                <div class="testimonial-stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "The course structure is simple and
+                    easy to understand."
+                </p>
+
+                <strong>
+                    Student
+                </strong>
+
+            </div>
+
+
+            <div class="testimonial-card">
+
+                <div class="testimonial-stars">
+                    ★★★★★
+                </div>
+
+                <p>
+                    "I can easily continue my learning
+                    from my phone."
+                </p>
+
+                <strong>
+                    Student
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         CONTACT
+    ================================================== -->
+
+    <section class="home-contact">
+
+        <div>
+
+            <p class="small-title">
+                NEED HELP?
+            </p>
+
+            <h2>
+                Have a Question?
+            </h2>
+
+            <p>
+                Contact us for course or learning related
+                queries.
+            </p>
+
+        </div>
+
+
+        <a
+            href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+            class="course-button"
+        >
+            Contact Us
+        </a>
+
+    </section>
+
+
+
+</main>
+
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer class="home-footer">
+
+    <div class="footer-content">
+
+
+        <div>
+
+            <h3>
+                SEMESTER EXPRESS
+            </h3>
+
+            <p>
+                Learn better. Learn smarter.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h4>
+                Quick Links
+            </h4>
+
+            <a href="{% url 'courses:collections' %}">
+                Courses
+            </a>
+
+            <a href="{% url 'courses:free_courses' %}">
+                Free Courses
+            </a>
+
+            <a href="{% url 'dashboard:profile' %}">
+                My Profile
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h4>
+                Contact
+            </h4>
+
+            <p>
+                Support available through WhatsApp.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Semester Express. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- ==================================================
+     WHATSAPP
+================================================== -->
+
+<a
+    href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+    class="whatsapp-button"
+    aria-label="WhatsApp"
+>
+    💬
+</a>
+
+
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+
+</body>
+
+</html>

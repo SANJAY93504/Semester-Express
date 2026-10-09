@@ -1,0 +1,357 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile - Semester Express</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+    <!-- SIDE MENU -->
+    <aside class="side-menu" id="sideMenu">
+
+        <div class="side-menu-header">
+            <h3>Semester Express</h3>
+        </div>
+
+         <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+    </aside>
+
+
+    <!-- OVERLAY -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+
+    <!-- MAIN -->
+    <main class="dashboard-container">
+
+        <div class="welcome-section">
+
+            <p class="small-title">
+                STUDENT ACCOUNT
+            </p>
+
+            <h1>
+                Edit Profile
+            </h1>
+
+            <p>
+                Update your Semester Express profile information.
+            </p>
+
+        </div>
+
+
+        <!-- EDIT PROFILE CARD -->
+        <section class="profile-card">
+
+            <!-- CURRENT PHOTO -->
+
+            <div class="profile-photo-section">
+
+                {% if student_profile and student_profile.profile_photo %}
+
+                    <img
+                        src="{{ student_profile.profile_photo.url }}"
+                        alt="Current Profile Photo"
+                        class="profile-photo"
+                    >
+
+                {% else %}
+
+                    <div class="profile-photo profile-photo-placeholder">
+                        👤
+                    </div>
+
+                {% endif %}
+
+                <h2>
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </h2>
+
+                <p>
+                    Student
+                </p>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <div class="profile-details">
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="profile-form"
+                >
+
+                    {% csrf_token %}
+                    {% if form.errors %}
+    <div class="form-error-message">
+        Please correct the errors below.
+        {{ form.errors }}
+    </div>
+{% endif %}
+
+
+                    <!-- PROFILE PHOTO -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.profile_photo.id_for_label }}">
+                            Profile Photo
+                        </label>
+
+                        {{ form.profile_photo }}
+
+                    </div>
+
+
+                    <!-- NAME -->
+
+<div class="form-group">
+
+    <label for="{{ form.first_name.id_for_label }}">
+        First Name
+    </label>
+
+    {{ form.first_name }}
+
+</div>
+
+
+<div class="form-group">
+
+    <label for="{{ form.last_name.id_for_label }}">
+        Last Name
+    </label>
+
+    {{ form.last_name }}
+
+    <small>
+        You can update your profile name here.
+    </small>
+
+</div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Google Email
+                        </label>
+
+                        <input
+                            type="email"
+                            value="{{ request.user.email }}"
+                            readonly
+                        >
+
+                        <small>
+                            Google email cannot be edited here.
+                        </small>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.phone_number.id_for_label }}">
+                            Phone Number
+                        </label>
+
+                        {{ form.phone_number }}
+
+                    </div>
+
+
+                    <!-- COURSE -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.course.id_for_label }}">
+                            Course
+                        </label>
+
+                        {{ form.course }}
+
+                    </div>
+
+
+                    <!-- BRANCH -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.branch.id_for_label }}">
+                            Branch
+                        </label>
+
+                        {{ form.branch }}
+
+                    </div>
+
+
+                    <!-- SEMESTER -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.semester.id_for_label }}">
+                            Semester
+                        </label>
+
+                        {{ form.semester }}
+
+                    </div>
+
+
+                    <!-- STUDENT ID -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.student_id.id_for_label }}">
+                            Student ID
+                        </label>
+
+                        {{ form.student_id }}
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="profile-form-actions">
+
+                        <a
+                            href="{% url 'dashboard:profile' %}"
+                            class="cancel-profile-button"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="save-profile-button"
+                        >
+                            Save Profile
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- WHATSAPP -->
+
+    <a
+        href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+        class="whatsapp-button"
+        title="Join WhatsApp Group"
+    >
+        WhatsApp
+    </a>
+
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>

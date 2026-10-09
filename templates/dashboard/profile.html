@@ -1,0 +1,354 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Profile - Semester Express</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- ================= SIDE MENU ================= -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+<aside
+    class="side-menu"
+    id="sideMenu"
+>
+
+    <div class="side-menu-header">
+        <h3>Semester Express</h3>
+    </div>
+
+     <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="dashboard-main">
+
+    <div class="profile-page">
+
+        <!-- Breadcrumb -->
+
+        <div class="profile-breadcrumb">
+            <a href="{% url 'dashboard:home' %}">
+                Dashboard
+            </a>
+
+            <span>›</span>
+
+            <span>My Profile</span>
+        </div>
+
+
+        <!-- Profile Header -->
+
+        <section class="profile-header-card">
+
+            <div class="profile-photo-wrapper">
+
+                {% if student_profile.profile_photo %}
+
+                    <img
+                        src="{{ student_profile.profile_photo.url }}"
+                        alt="Profile Photo"
+                        class="profile-photo"
+                    >
+
+                {% else %}
+
+                    <div class="profile-photo-placeholder">
+                        👤
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="profile-header-info">
+
+                <h1>
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </h1>
+
+                <p>
+                    Student
+                </p>
+
+                <a
+                    href="{% url 'dashboard:edit_profile' %}"
+                    class="edit-profile-button"
+                >
+                    ✏️ Edit Profile
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- Profile Details -->
+
+        <section class="profile-details-card">
+
+            <div class="profile-section-title">
+                <h2>Profile Details</h2>
+            </div>
+
+
+            <div class="profile-details-grid">
+
+                <!-- Name -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Student Name
+                    </span>
+
+                    <strong>
+                        {{ request.user.get_full_name|default:"Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Google Email -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Google Email
+                    </span>
+
+                    <strong>
+                        {{ google_email|default:"Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Phone -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Phone Number
+                    </span>
+
+                    <strong>
+                        {{ student_profile.phone_number|default:"Not added" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Course -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Course
+                    </span>
+
+                    <strong>
+                        {{ student_profile.course|default:"Not added" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Branch -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Branch
+                    </span>
+
+                    <strong>
+                        {{ student_profile.branch|default:"Not added" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Semester -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Semester
+                    </span>
+
+                    <strong>
+                        {{ student_profile.semester|default:"Not added" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Student ID -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Student ID
+                    </span>
+
+                    <strong>
+                        {{ student_profile.student_id|default:"Not assigned" }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Registration Date -->
+
+                <div class="profile-detail-item">
+
+                    <span class="profile-detail-label">
+                        Registration Date
+                    </span>
+
+                    <strong>
+                        {{ student_profile.registration_date|date:"d M Y" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ================= WHATSAPP ================= -->
+
+<a
+    href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+    class="whatsapp-button"
+    aria-label="WhatsApp Group"
+>
+    💬
+</a>
+
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>

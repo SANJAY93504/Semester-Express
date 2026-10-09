@@ -1,0 +1,995 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ lecture.title }} - Semester Express</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+
+    <style>
+
+        /* ==================================================
+           LECTURE PAGE
+        ================================================== */
+
+        .lecture-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+
+        /* ==================================================
+           BREADCRUMB
+        ================================================== */
+
+        .lecture-breadcrumb {
+            margin-bottom: 20px;
+            color: #777;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .lecture-breadcrumb a {
+            color: #f97316;
+            text-decoration: none;
+        }
+
+
+        /* ==================================================
+           LECTURE HEADER
+        ================================================== */
+
+        .lecture-header-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .lecture-header-card h1 {
+            margin: 0 0 10px;
+            font-size: 30px;
+            color: #222;
+        }
+
+        .lecture-description {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .lecture-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .lecture-action-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .lecture-back-btn {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .lecture-course-btn {
+            background: #f97316;
+            color: white;
+        }
+
+
+        /* ==================================================
+           COMMON SECTION
+        ================================================== */
+
+        .lecture-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .lecture-section-title {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #222;
+            font-size: 22px;
+        }
+
+
+        /* ==================================================
+           VIDEO
+        ================================================== */
+
+        .lecture-video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #111827;
+        }
+
+        .lecture-video-wrapper iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            left: 0;
+            top: 0;
+        }
+
+        .lecture-no-video {
+            padding: 50px 20px;
+            text-align: center;
+            color: #777;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+
+        /* ==================================================
+           STUDY MATERIALS
+        ================================================== */
+
+        .lecture-resource {
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .lecture-resource:last-child {
+            margin-bottom: 0;
+        }
+
+        .lecture-resource h3 {
+            margin: 0 0 6px;
+            color: #222;
+            font-size: 17px;
+        }
+
+        .lecture-resource p {
+            margin: 0 0 10px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .lecture-resource-link {
+            display: inline-block;
+            color: #f97316;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .lecture-no-resources {
+            color: #777;
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        /* ==================================================
+           ABOUT
+        ================================================== */
+
+        .lecture-about-text {
+            color: #666;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+
+        /* ==================================================
+           PREVIOUS / NEXT NAVIGATION
+        ================================================== */
+
+        .lecture-navigation {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .lecture-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 38px;
+            padding: 8px 13px;
+            border-radius: 7px;
+            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .lecture-nav-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .lecture-nav-previous,
+        .lecture-nav-next {
+            text-align: center;
+        }
+
+        .lecture-nav-course {
+            text-align: center;
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+
+        .lecture-nav-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            margin: 0;
+        }
+
+        .lecture-nav-course .lecture-nav-label {
+            color: white;
+        }
+
+        .lecture-nav-title {
+            display: none;
+        }
+
+        .lecture-nav-disabled {
+            min-height: 38px;
+            padding: 8px 13px;
+            border-radius: 7px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            color: #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lecture-nav-disabled .lecture-nav-label {
+            color: #94a3b8;
+        }
+
+
+        /* ==================================================
+           BOTTOM LINK
+        ================================================== */
+
+        .lecture-bottom-link {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .lecture-bottom-link a {
+            color: #f97316;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+
+        /* ==================================================
+           MOBILE
+        ================================================== */
+
+        @media (max-width: 768px) {
+
+            .lecture-page {
+                padding: 20px 15px 40px;
+            }
+
+            .lecture-header-card,
+            .lecture-section {
+                padding: 20px;
+            }
+
+            .lecture-header-card h1 {
+                font-size: 25px;
+            }
+
+            .lecture-navigation {
+                justify-content: flex-start;
+                gap: 7px;
+            }
+
+            .lecture-nav-btn,
+            .lecture-nav-disabled {
+                min-height: 36px;
+                padding: 7px 11px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     HEADER
+================================================== -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==================================================
+     SIDE MENU
+================================================== -->
+
+<aside
+    class="side-menu"
+    id="sideMenu"
+>
+
+    <div class="side-menu-header">
+
+        <h3>
+            Semester Express
+        </h3>
+
+    </div>
+
+
+     <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+
+<!-- ==================================================
+     OVERLAY
+================================================== -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+
+
+<!-- ==================================================
+     MAIN CONTENT
+================================================== -->
+
+<main class="dashboard-container">
+
+
+    <div class="lecture-page">
+
+
+        <!-- ==================================================
+             BREADCRUMB
+        ================================================== -->
+
+        <div class="lecture-breadcrumb">
+
+            <a
+                href="{% url 'courses:course_learning' lecture.unit.subject.course.id %}"
+            >
+                {{ lecture.unit.subject.course.name }}
+            </a>
+
+            /
+
+            <a
+                href="{% url 'courses:subject_detail' lecture.unit.subject.id %}"
+            >
+                {{ lecture.unit.subject.name }}
+            </a>
+
+            /
+
+            <a
+                href="{% url 'courses:unit_detail' lecture.unit.id %}"
+            >
+                {{ lecture.unit.name }}
+            </a>
+
+            /
+
+            {{ lecture.title }}
+
+        </div>
+
+
+
+        <!-- ==================================================
+             LECTURE HEADER
+        ================================================== -->
+
+        <section class="lecture-header-card">
+
+            <h1>
+                {{ lecture.title }}
+            </h1>
+
+
+            {% if lecture.description %}
+
+                <div class="lecture-description">
+
+                    {{ lecture.description }}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="lecture-actions">
+
+                <a
+                    href="{% url 'courses:unit_detail' lecture.unit.id %}"
+                    class="lecture-action-btn lecture-back-btn"
+                >
+                    ← Back to Unit
+                </a>
+
+
+                <a
+                    href="{% url 'courses:course_learning' lecture.unit.subject.course.id %}"
+                    class="lecture-action-btn lecture-course-btn"
+                >
+                    📚 Course Content
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             VIDEO
+        ================================================== -->
+
+        <section class="lecture-section">
+
+            <h2 class="lecture-section-title">
+                🎥 Lecture Video
+            </h2>
+
+
+            {% if lecture.video_url %}
+
+                <div class="lecture-video-wrapper">
+
+                    <iframe
+    id="lectureVideo"
+    src=""
+    title="{{ lecture.title }}"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+></iframe>
+
+                </div>
+
+            {% else %}
+
+                <div class="lecture-no-video">
+
+                    <p>
+                        Video for this lecture is not available yet.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STUDY MATERIALS
+        ================================================== -->
+
+        <section class="lecture-section">
+
+            <h2 class="lecture-section-title">
+                📚 Study Materials
+            </h2>
+
+
+            {% if resources %}
+
+                {% for resource in resources %}
+
+                    <div class="lecture-resource">
+
+                        <h3>
+                            {{ resource.title }}
+                        </h3>
+
+
+                        {% if resource.description %}
+
+                            <p>
+                                {{ resource.description }}
+                            </p>
+
+                        {% endif %}
+
+
+                        {% if resource.pdf_file %}
+
+                            <a
+                                href="{{ resource.pdf_file.url }}"
+                                target="_blank"
+                                class="lecture-resource-link"
+                            >
+                                📄 Open PDF
+                            </a>
+
+                        {% elif resource.resource_url %}
+
+                            <a
+                                href="{{ resource.resource_url }}"
+                                target="_blank"
+                                class="lecture-resource-link"
+                            >
+                                🔗 Open Resource
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <div class="lecture-no-resources">
+
+                    No study materials available for this lecture.
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ==================================================
+             ABOUT LECTURE
+        ================================================== -->
+
+        <section class="lecture-section">
+
+            <h2 class="lecture-section-title">
+                📝 About this Lecture
+            </h2>
+
+
+            {% if lecture.description %}
+
+                <p class="lecture-about-text">
+                    {{ lecture.description }}
+                </p>
+
+            {% else %}
+
+                <p class="lecture-about-text">
+
+                    This lecture is part of
+                    <strong>{{ lecture.unit.subject.name }}</strong>
+                    in
+                    <strong>{{ lecture.unit.subject.course.name }}</strong>.
+
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ==================================================
+             PREVIOUS / COURSE CONTENT / NEXT
+        ================================================== -->
+
+        <div class="lecture-navigation">
+
+
+            <!-- PREVIOUS -->
+
+            {% if previous_lecture %}
+
+                <a
+                    href="{% url 'courses:lecture_detail' previous_lecture.id %}"
+                    class="lecture-nav-btn lecture-nav-previous"
+                >
+
+                    <span class="lecture-nav-label">
+                        ← Previous Lecture
+                    </span>
+
+
+                    <span class="lecture-nav-title">
+                        {{ previous_lecture.title }}
+                    </span>
+
+                </a>
+
+
+            {% else %}
+
+                <div
+                    class="lecture-nav-disabled lecture-nav-previous"
+                >
+
+                    <span class="lecture-nav-label">
+                        ← Previous Lecture
+                    </span>
+
+
+                    <span>
+                        No previous lecture
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+
+
+            <!-- COURSE CONTENT -->
+
+            <a
+                href="{% url 'courses:course_learning' lecture.unit.subject.course.id %}"
+                class="lecture-nav-btn lecture-nav-course"
+            >
+
+                <span class="lecture-nav-label">
+                    📚
+                </span>
+
+
+                <span class="lecture-nav-title">
+                    Course Content
+                </span>
+
+            </a>
+
+
+
+            <!-- NEXT -->
+
+            {% if next_lecture %}
+
+                <a
+                    href="{% url 'courses:lecture_detail' next_lecture.id %}"
+                    class="lecture-nav-btn lecture-nav-next"
+                >
+
+                    <span class="lecture-nav-label">
+                        Next Lecture →
+                    </span>
+
+
+                    <span class="lecture-nav-title">
+                        {{ next_lecture.title }}
+                    </span>
+
+                </a>
+
+
+            {% else %}
+
+                <div
+                    class="lecture-nav-disabled lecture-nav-next"
+                >
+
+                    <span class="lecture-nav-label">
+                        Next Lecture →
+                    </span>
+
+
+                    <span>
+                        No next lecture
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- ==================================================
+             BOTTOM COURSE LINK
+        ================================================== -->
+
+        <div class="lecture-bottom-link">
+
+            <a
+                href="{% url 'courses:course_learning' lecture.unit.subject.course.id %}"
+            >
+                ← Back to Course Content
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- ==================================================
+     WHATSAPP
+================================================== -->
+
+<a
+    href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+    class="whatsapp-button"
+    title="Join WhatsApp Group"
+>
+    WhatsApp
+</a>
+
+
+
+<!-- ==================================================
+     YOUTUBE VIDEO CONVERTER
+================================================== -->
+
+{% if lecture.video_url %}
+
+<script>
+
+    function getYouTubeEmbedUrl(url) {
+
+        try {
+
+            const videoUrl = new URL(url);
+
+            let videoId = "";
+
+
+            /* ==========================================
+               youtube.com/watch?v=VIDEO_ID
+            ========================================== */
+
+            if (videoUrl.hostname.includes("youtube.com")) {
+
+                if (videoUrl.pathname === "/watch") {
+
+                    videoId = videoUrl.searchParams.get("v") || "";
+
+                }
+
+
+                /* ======================================
+                   youtube.com/shorts/VIDEO_ID
+                ====================================== */
+
+                else if (videoUrl.pathname.startsWith("/shorts/")) {
+
+                    videoId = videoUrl.pathname
+                        .split("/shorts/")[1]
+                        .split("/")[0];
+
+                }
+
+
+                /* ======================================
+                   youtube.com/embed/VIDEO_ID
+                ====================================== */
+
+                else if (videoUrl.pathname.startsWith("/embed/")) {
+
+                    videoId = videoUrl.pathname
+                        .split("/embed/")[1]
+                        .split("/")[0];
+
+                }
+
+            }
+
+
+            /* ==========================================
+               youtu.be/VIDEO_ID
+            ========================================== */
+
+            else if (videoUrl.hostname === "youtu.be") {
+
+                videoId = videoUrl.pathname
+                    .substring(1)
+                    .split("/")[0];
+
+            }
+
+
+            if (!videoId) {
+
+                return "";
+
+            }
+
+
+            return "https://www.youtube.com/embed/" + videoId;
+
+        }
+
+        catch (error) {
+
+            return "";
+
+        }
+
+    }
+
+
+    const lectureVideo =
+        document.getElementById("lectureVideo");
+
+
+    if (lectureVideo) {
+
+        const videoUrl =
+            "{{ lecture.video_url|escapejs }}";
+
+
+        const embedUrl =
+            getYouTubeEmbedUrl(videoUrl);
+
+
+        if (embedUrl) {
+
+            lectureVideo.src = embedUrl;
+
+        }
+
+        else {
+
+            lectureVideo.style.display = "none";
+
+        }
+
+    }
+
+</script>
+
+{% endif %}
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+
+</body>
+
+</html>

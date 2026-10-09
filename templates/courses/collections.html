@@ -1,0 +1,276 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Courses - Semester Express</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>   
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+<!-- ================= SIDE MENU ================= -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+<aside
+    class="side-menu"
+    id="sideMenu"
+>
+
+    <div class="side-menu-header">
+        <h3>Semester Express</h3>
+    </div>
+
+    <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="dashboard-main">
+
+    <div class="profile-page">
+
+        <!-- BREADCRUMB -->
+
+        <div class="profile-breadcrumb">
+
+            <a href="{% url 'dashboard:home' %}">
+                Dashboard
+            </a>
+
+            <span>›</span>
+
+            <span>Courses</span>
+
+        </div>
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="welcome-section">
+
+            <p class="small-title">
+                SEMESTER EXPRESS
+            </p>
+
+            <h1>
+                Courses
+            </h1>
+
+            <p>
+                Explore our available course collections.
+            </p>
+
+        </div>
+
+
+        <!-- COLLECTIONS -->
+
+        <section class="profile-details-card">
+
+            <div class="profile-section-title">
+
+                <h2>
+                    Course Collections
+                </h2>
+
+            </div>
+
+
+            {% if collections %}
+
+                <div class="course-collection-grid">
+
+                    {% for collection in collections %}
+
+                        <a
+                            href="{% url 'courses:collection_detail' collection.id %}"
+                            class="course-collection-card"
+                        >
+
+                            <div class="course-collection-image">
+
+                                {% if collection.image %}
+
+                                    <img
+                                        src="{{ collection.image.url }}"
+                                        alt="{{ collection.name }}"
+                                    >
+
+                                {% else %}
+
+                                    <div class="course-image-placeholder">
+                                        📚
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="course-collection-content">
+
+                                <h3>
+                                    {{ collection.name }}
+                                </h3>
+
+                                {% if collection.description %}
+
+                                    <p>
+                                        {{ collection.description }}
+                                    </p>
+
+                                {% else %}
+
+                                    <p>
+                                        Explore courses in this collection.
+                                    </p>
+
+                                {% endif %}
+
+                                <span class="course-view-more">
+                                    View Courses →
+                                </span>
+
+                            </div>
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-course-state">
+
+                    <div class="empty-course-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        No Courses Available
+                    </h3>
+
+                    <p>
+                        Courses will appear here when they are added.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ================= WHATSAPP ================= -->
+
+<a
+    href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+    class="whatsapp-button"
+    aria-label="WhatsApp Group"
+>
+    💬
+</a>
+
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>

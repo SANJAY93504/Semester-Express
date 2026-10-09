@@ -1,0 +1,368 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ course.name }} - Learning - Semester Express</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+</head>
+
+<body>
+
+   <!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+
+    <!-- Sidebar -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+    <aside
+        class="dashboard-sidebar"
+        id="dashboardSidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <div class="sidebar-logo">
+                SE
+            </div>
+
+            <span>
+                Semester Express
+            </span>
+
+        </div>
+
+
+         <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+
+            <a href="{% url 'courses:collections' %}">
+                Courses
+            </a>
+
+            <span>›</span>
+
+            <span>
+                {{ course.name }}
+            </span>
+
+            <span>›</span>
+
+            <span>
+                Learning
+            </span>
+
+        </div>
+
+
+        <!-- Learning Header -->
+        <section class="course-detail-header">
+
+            <div class="course-detail-image">
+
+                {% if course.image %}
+
+                    <img
+                        src="{{ course.image.url }}"
+                        alt="{{ course.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="course-image-placeholder">
+                        📚
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="course-detail-info">
+
+                <h1>
+                    {{ course.name }}
+                </h1>
+
+                {% if course.branch %}
+
+                    <p>
+                        🎓 {{ course.branch }}
+                    </p>
+
+                {% endif %}
+
+                {% if course.semester %}
+
+                    <p>
+                        📖 {{ course.semester }}
+                    </p>
+
+                {% endif %}
+
+                <p class="course-detail-description">
+                    Course Learning
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Learning Content -->
+        <section class="subjects-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Course Content
+                    </h2>
+
+                    <p>
+                        Subjects, units and lectures
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if subjects %}
+
+                <div class="subject-grid">
+
+                    {% for subject in subjects %}
+
+                        <div class="subject-card">
+
+                            <div>
+
+                                <h3>
+                                    {{ subject.name }}
+                                </h3>
+
+
+                                {% if subject.description %}
+
+                                    <p>
+                                        {{ subject.description }}
+                                    </p>
+
+                                {% endif %}
+
+
+                                <!-- Units -->
+                                {% for unit in subject.units.all %}
+
+                                    <div
+                                        style="
+                                            margin-top: 20px;
+                                            padding-top: 15px;
+                                            border-top: 1px solid rgba(128,128,128,0.2);
+                                        "
+                                    >
+
+                                        <h4>
+                                            📁 {{ unit.name }}
+                                        </h4>
+
+
+                                        {% if unit.description %}
+
+                                            <p>
+                                                {{ unit.description }}
+                                            </p>
+
+                                        {% endif %}
+
+
+                                        <!-- Lectures -->
+                                        {% for lecture in unit.lectures.all %}
+
+                                            <a
+                                                href="{% url 'courses:lecture_detail' lecture.id %}"
+                                                style="
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: space-between;
+                                                    gap: 12px;
+                                                    margin-top: 10px;
+                                                    padding: 12px;
+                                                    border-radius: 10px;
+                                                    text-decoration: none;
+                                                    background: rgba(128,128,128,0.08);
+                                                    color: inherit;
+                                                "
+                                            >
+
+                                                <span>
+                                                    🎥 {{ lecture.title }}
+                                                </span>
+
+                                                <span>
+                                                    →
+                                                </span>
+
+                                            </a>
+
+                                        {% empty %}
+
+                                            <p style="margin-top: 10px;">
+                                                No lectures available.
+                                            </p>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% empty %}
+
+                                    <p style="margin-top: 15px;">
+                                        No units available.
+                                    </p>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-state-icon">
+                        📖
+                    </div>
+
+                    <h2>
+                        No Course Content Available
+                    </h2>
+
+                    <p>
+                        Subjects and lectures for this course will be available soon.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <!-- WhatsApp -->
+    <a
+        href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+        class="whatsapp-button"
+    >
+        💬
+    </a>
+
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>

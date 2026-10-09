@@ -1,0 +1,100 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Google Login - Semester Express</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/login.css' %}"
+    >
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+
+</head>
+
+
+<body class="login-body">
+
+<div class="login-page">
+
+    <div class="login-card google-confirm-card">
+
+        <!-- LOGO -->
+
+        <div class="login-logo">
+            SE
+        </div>
+
+
+        <!-- GOOGLE ICON -->
+<!-- 
+        <div class="google-confirm-icon">
+            G
+        </div> -->
+
+
+        <h1 class="login-title">
+            Sign In Via Google
+        </h1>
+
+
+        <p class="login-subtitle">
+            You are about to sign in using your
+            Google account.
+        </p>
+
+
+        <p class="google-confirm-text">
+            Continue to Semester Express with Google?
+        </p>
+
+
+        <!-- GOOGLE CONFIRM FORM -->
+
+        <form
+            method="POST"
+            action=""
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="otp-button google-confirm-button"
+            >
+                Continue with Google
+            </button>
+
+        </form>
+
+
+        <!-- CANCEL -->
+
+        <a
+            href="{% url 'account_login' %}"
+            class="google-cancel-button"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

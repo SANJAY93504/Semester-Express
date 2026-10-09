@@ -1,0 +1,578 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard - Semester Express</title>
+
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     HEADER
+================================================== -->
+
+<header class="top-header">
+
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+
+    <div class="header-right">
+
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- ==================================================
+     SIDE MENU
+================================================== -->
+
+<aside
+    class="side-menu"
+    id="sideMenu"
+>
+
+
+    <div class="side-menu-header">
+
+        <h3>
+            Semester Express
+        </h3>
+
+    </div>
+
+
+     <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+
+<!-- ==================================================
+     OVERLAY
+================================================== -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+
+
+<!-- ==================================================
+     MAIN CONTENT
+================================================== -->
+
+<main class="dashboard-container">
+
+
+    <!-- ==================================================
+         WELCOME
+    ================================================== -->
+
+    <div class="welcome-section">
+
+
+        <p class="small-title">
+            STUDENT DASHBOARD
+        </p>
+
+
+        <h1>
+            Welcome,
+            {{ request.user.first_name|default:request.user.username }}
+        </h1>
+
+
+        <p>
+            Welcome back to Semester Express.
+        </p>
+
+
+    </div>
+
+
+
+    <!-- ==================================================
+         STATS
+    ================================================== -->
+
+    <section class="dashboard-stats">
+
+
+        <!-- MY COURSES -->
+
+        <a
+            href="{% url 'dashboard:my_courses' %}"
+            class="stat-card"
+            style="text-decoration: none; color: inherit;"
+        >
+
+            <div class="stat-icon">
+                📚
+            </div>
+
+
+            <div>
+
+                <h3>
+                    {{ purchase_count }}
+                </h3>
+
+                <p>
+                    My Courses
+                </p>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- ACCOUNT TYPE -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🎓
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Student
+                </h3>
+
+                <p>
+                    Account Type
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- USERNAME -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👤
+            </div>
+
+
+            <div>
+
+                <h3>
+                    {{ request.user.username }}
+                </h3>
+
+                <p>
+                    Username
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         MY PROFILE
+    ================================================== -->
+
+    <section class="subjects-section">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <h2>
+                    My Profile
+                </h2>
+
+                <p>
+                    Your student information
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'dashboard:profile' %}"
+                class="course-button"
+            >
+                View Profile
+            </a>
+
+
+        </div>
+
+
+
+        <div class="subject-grid">
+
+
+            <!-- STUDENT INFO -->
+
+            <div class="subject-card">
+
+
+                <div>
+
+                    <h3>
+                        {{ request.user.get_full_name|default:request.user.username }}
+                    </h3>
+
+                    <p>
+                        Student
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PURCHASE COUNT -->
+
+            <a
+                href="{% url 'dashboard:my_courses' %}"
+                class="subject-card"
+                style="text-decoration: none; color: inherit;"
+            >
+
+                <div>
+
+                    <h3>
+                        {{ purchase_count }}
+                    </h3>
+
+                    <p>
+                        Purchased Courses
+                    </p>
+
+                </div>
+
+
+                <span>
+                    →
+                </span>
+
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         MY COURSES
+    ================================================== -->
+
+    <section class="courses-section">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <p class="small-title">
+                    LEARNING
+                </p>
+
+
+                <h2>
+                    My Courses
+                </h2>
+
+            </div>
+
+
+            <a
+                href="{% url 'dashboard:my_courses' %}"
+                class="view-more"
+            >
+                View More →
+            </a>
+
+
+        </div>
+
+
+
+        {% if purchases %}
+
+
+            <div class="course-grid">
+
+
+                {% for purchase in purchases %}
+
+
+                    <div class="course-card">
+
+
+                        <!-- COURSE IMAGE -->
+
+                        {% if purchase.course.image %}
+
+
+                            <img
+                                src="{{ purchase.course.image.url }}"
+                                alt="{{ purchase.course.name }}"
+                            >
+
+
+                        {% else %}
+
+
+                            <div class="course-placeholder">
+                                📚
+                            </div>
+
+
+                        {% endif %}
+
+
+
+                        <!-- COURSE CONTENT -->
+
+                        <div class="course-card-content">
+
+
+                            <span class="course-badge">
+                                PURCHASED
+                            </span>
+
+
+                            <h3>
+                                {{ purchase.course.name }}
+                            </h3>
+
+
+                            <p>
+
+                                {% if purchase.course.branch %}
+
+                                    {{ purchase.course.branch }}
+
+                                {% endif %}
+
+
+                                {% if purchase.course.semester %}
+
+                                    • Semester
+                                    {{ purchase.course.semester }}
+
+                                {% endif %}
+
+                            </p>
+
+
+                            <a
+                                href="{% url 'courses:course_detail' purchase.course.id %}"
+                                class="course-button"
+                            >
+                                Open Course →
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- EMPTY MY COURSES -->
+
+            <div class="empty-courses">
+
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+
+                <h3>
+                    You have not purchased any course yet.
+                </h3>
+
+
+                <p>
+                    Explore our courses and start learning today.
+                </p>
+
+
+                <a
+                    href="{% url 'courses:collections' %}"
+                    class="primary-button"
+                >
+                    Explore Courses
+                </a>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     WHATSAPP
+================================================== -->
+
+<a
+    href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+    class="whatsapp-button"
+    title="Join WhatsApp Group"
+>
+    WhatsApp
+</a>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+
+</body>
+
+</html>

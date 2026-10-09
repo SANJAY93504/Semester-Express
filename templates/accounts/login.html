@@ -1,0 +1,122 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login - Semester Express</title>
+
+    <link
+    rel="stylesheet"
+    href="{% static 'css/login.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+
+</head>
+
+<body class="login-body">
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            SE
+        </div>
+
+        <h1 class="login-title">
+            SEMESTER EXPRESS
+        </h1>
+
+        <p class="login-subtitle">
+            Login to continue your learning journey
+        </p>
+
+
+        <!-- GOOGLE LOGIN -->
+
+        <a
+            href="/accounts/google/login/"
+            class="google-login-button"
+        >
+            <span class="google-icon">G</span>
+
+            Continue with Google
+        </a>
+
+
+        <!-- DIVIDER -->
+
+        <div class="login-divider">
+            <span>OR</span>
+        </div>
+
+
+        <!-- PHONE LOGIN -->
+
+        <form
+            method="POST"
+            action="#"
+        >
+
+            {% csrf_token %}
+
+            <label
+                for="phone"
+                class="phone-label"
+            >
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="phone-input"
+                placeholder="Enter 10-digit phone number"
+                maxlength="10"
+                inputmode="numeric"
+                autocomplete="tel"
+            >
+
+            <button
+                type="submit"
+                class="otp-button"
+            >
+                Send OTP
+            </button>
+
+        </form>
+
+
+        <p class="login-note">
+            By continuing, you agree to Semester Express
+            Terms & Privacy Policy.
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,302 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ course.name }} - Semester Express</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+    <!-- Sidebar -->
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+    <aside
+        class="dashboard-sidebar"
+        id="dashboardSidebar"
+    >
+
+        <div class="sidebar-header">
+
+            <div class="sidebar-logo">
+                SE
+            </div>
+
+            <span>
+                Semester Express
+            </span>
+
+        </div>
+
+
+         <nav>
+
+        <a href="{% url 'dashboard:home' %}">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="{% url 'courses:collections' %}">
+            📚 Courses
+        </a>
+
+
+        <a href="{% url 'courses:paid_courses' %}">
+            💳 Paid Courses 
+        </a>
+
+
+        <a href="{% url 'courses:free_courses' %}">
+            🎓 Free Courses
+        </a>
+
+
+        <a href="{% url 'dashboard:profile' %}">
+            👤 My Profile
+        </a>
+
+
+        <a href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN">
+            📞 Contact
+        </a>
+
+
+        <a href="{% url 'account_logout' %}">
+            🚪 Logout
+        </a>
+
+    </nav>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+
+            <a href="{% url 'courses:collections' %}">
+                Courses
+            </a>
+
+            <span>›</span>
+
+            <span>
+                {{ course.collection.name }}
+            </span>
+
+            <span>›</span>
+
+            <span>
+                {{ course.name }}
+            </span>
+
+        </div>
+
+
+        <!-- Course Header -->
+        <section class="course-detail-header">
+
+            <div class="course-detail-image">
+
+                {% if course.image %}
+
+                    <img
+                        src="{{ course.image.url }}"
+                        alt="{{ course.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="course-image-placeholder">
+                        📚
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="course-detail-info">
+
+                <h1>
+                    {{ course.name }}
+                </h1>
+
+
+                {% if course.branch %}
+
+                    <p>
+                        🎓 {{ course.branch }}
+                    </p>
+
+                {% endif %}
+
+
+                {% if course.semester %}
+
+                    <p>
+                        📖 {{ course.semester }}
+                    </p>
+
+                {% endif %}
+
+
+                {% if course.description %}
+
+                    <p class="course-detail-description">
+                        {{ course.description }}
+                    </p>
+
+                {% endif %}
+
+
+                <!-- Course Price -->
+
+{% if course.is_paid %}
+
+    <div class="course-price">
+
+        {% if course.original_price %}
+            <span class="course-original-price">
+                ₹{{ course.original_price }}
+            </span>
+        {% endif %}
+
+        <strong>
+            ₹{{ course.price }}
+        </strong>
+
+    </div>
+
+{% else %}
+
+    <strong class="free-label">
+        FREE
+    </strong>
+
+{% endif %}
+
+
+                <!-- Course Action -->
+                {% if course.is_paid %}
+
+                    {% if has_access %}
+
+                        <!-- Purchased Paid Course -->
+                        <a
+                            href="{% url 'courses:course_learning' course.id %}"
+                            class="course-button"
+                        >
+                            Open Course
+                        </a>
+
+                    {% elif user.is_authenticated %}
+
+                        <!-- Logged in but not purchased -->
+                        <a
+                            href="{% url 'payments:buy_course' course.id %}"
+                            class="course-button"
+                        >
+                            Buy Now
+                        </a>
+
+                    {% else %}
+
+                        <!-- Not logged in -->
+                        <a
+                            href="{% url 'account_login' %}?next={% url 'payments:buy_course' course.id %}"
+                            class="course-button"
+                        >
+                            Login to Buy
+                        </a>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <!-- Free Course -->
+                    <a
+                        href="{% url 'courses:course_learning' course.id %}"
+                        class="course-button"
+                    >
+                        Open Course
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- WhatsApp -->
+    <a
+        href="https://chat.whatsapp.com/DHzkH2NvlEI9miAnLLJ3BN"
+        class="whatsapp-button"
+    >
+        💬
+    </a>
+
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+</body>
+</html>

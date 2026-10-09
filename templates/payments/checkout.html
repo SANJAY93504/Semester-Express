@@ -1,0 +1,200 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - {{ course.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/favicon.ico' %}"
+>
+</head>
+
+<body>
+<header class="top-header">
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuBtn"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">
+        SEMESTER EXPRESS
+    </div>
+
+    <div class="header-right">
+
+        <button
+            type="button"
+            class="theme-btn"
+            id="themeBtn"
+        >
+            ☀️
+        </button>
+
+        <a
+            href="{% url 'dashboard:profile' %}"
+            class="profile-btn"
+        >
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+
+    <main class="dashboard-main">
+
+        <div class="breadcrumb">
+
+            <a href="{% url 'courses:collections' %}">
+                Courses
+            </a>
+
+            <span>›</span>
+
+            <a href="{% url 'courses:course_detail' course.id %}">
+                {{ course.name }}
+            </a>
+
+            <span>›</span>
+
+            <span>Checkout</span>
+
+        </div>
+
+
+        <section class="course-page-header">
+
+            <h1>Checkout</h1>
+
+            <p>
+                Complete your purchase to access this course.
+            </p>
+
+        </section>
+
+
+        <section class="course-detail-header">
+
+            <div class="course-detail-image">
+
+                {% if course.image %}
+
+                    <img
+                        src="{{ course.image.url }}"
+                        alt="{{ course.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="course-image-placeholder">
+                        📚
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="course-detail-info">
+
+                <h1>{{ course.name }}</h1>
+
+                {% if course.branch %}
+                    <p>🎓 {{ course.branch }}</p>
+                {% endif %}
+
+                {% if course.semester %}
+                    <p>📖 {{ course.semester }}</p>
+                {% endif %}
+
+
+                <div class="course-price">
+
+                    {% if course.original_price %}
+                        <span class="course-original-price">
+                            ₹{{ course.original_price }}
+                        </span>
+                    {% endif %}
+
+                    <strong>
+                        ₹{{ course.price }}
+                    </strong>
+
+                </div>
+
+
+                <div style="margin-top: 20px;">
+
+                    <button
+                        type="button"
+                        class="course-button"
+                        id="payButton"
+                    >
+                        Pay Now
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+document.getElementById("payButton").addEventListener("click", function () {
+
+    const options = {
+        key: "{{ razorpay_key_id }}",
+        amount: "{{ purchase.amount|floatformat:0 }}00",
+        currency: "INR",
+        name: "Semester Express",
+        description: "{{ course.name }}",
+        order_id: "{{ razorpay_order_id }}",
+
+        handler: function (response) {
+
+            alert(
+                "Payment successful!\n\nPayment ID: "
+                + response.razorpay_payment_id
+            );
+
+            console.log(response);
+        },
+
+        prefill: {
+            name: "{{ request.user.get_full_name }}",
+            email: "{{ request.user.email }}"
+        },
+
+        theme: {
+            color: "#f97316"
+        }
+    };
+
+    const razorpay = new Razorpay(options);
+
+    razorpay.open();
+});
+</script>
+
+</body>
+</html>
